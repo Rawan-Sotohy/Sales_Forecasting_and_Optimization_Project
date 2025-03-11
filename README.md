@@ -1,2 +1,2 @@
-# Sales_Forecasting_and_Optimization_Project
+# Sales Forecasting and Optimization
 This is a data science and machine learning project for DEPI
