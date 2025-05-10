@@ -63,6 +63,7 @@ if page == "Home":
             'Name of the product.',
             '**Target** — Sale amount (in USD) for the product line.'
         ]
+        
     })
 
     st.markdown("## Data Dictionary")
