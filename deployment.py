@@ -135,7 +135,8 @@ elif page == "Prediction":
     Ship_Date = st.date_input("Ship Date")
     Postal_Code = st.number_input("Postal Code", step=1)
     Ship_Mode = st.selectbox("Ship Mode", encoders['Ship_Mode'].classes_)
-    Product_Name = st.selectbox("Product Name", encoders['Product_Name'].classes_)
+    # Product_Name = st.selectbox("Product Name", encoders['Product_Name'].classes_)
+    Product_Name = st.text_input("Product Name")
     Category = st.selectbox("Category", encoders['Category'].classes_)
 
     if st.button("Predict Sales"):
