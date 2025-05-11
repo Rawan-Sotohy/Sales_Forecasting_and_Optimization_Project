@@ -116,7 +116,7 @@ if page == "Home":
         </a>
 
         <!-- Notebook Link -->
-        <a href="https://github.com/TokaKhaled4/Sales_Forecasting_and_Optimization_Project/" target="_blank" class="hover-div-notebook">
+        <a href="https://github.com/TokaKhaled4/Sales_Forecasting_and_Optimization_Project/blob/main/Sales%20Forcasting%20and%20Optimiztion.ipynb" target="_blank" class="hover-div-notebook">
             <h4 style="color: white;">View Our Notebook</h4>
         </a>
     """, unsafe_allow_html=True)
