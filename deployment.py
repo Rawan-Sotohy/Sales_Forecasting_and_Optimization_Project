@@ -134,7 +134,7 @@ elif page == "Prediction":
     Ship_Date = st.date_input("Ship Date")
     Postal_Code = st.number_input("Postal Code", step=1)
     Ship_Mode = st.selectbox("Ship Mode", encoders['Ship_Mode'].classes_)
-    Product_Name = st.text_input("Product Name (e.g., 'Fellowes SuperStor')").lower()
+    Product_Name = st.selectbox("Product Name", encoders['Product_Name'].classes_)
     Category = st.selectbox("Category", encoders['Category'].classes_)
 
     if st.button("Predict Sales"):
@@ -143,10 +143,6 @@ elif page == "Prediction":
             # Derived features
             Shipping_Duration = (Ship_Date - Order_Date).days
             Month = Order_Date.month
-
-            # Clean product name
-            import re
-            Product_Name_clean = re.sub(r'[^\w\s]', '', Product_Name).strip()
 
             # Construct input dictionary
             input_dict = {
@@ -158,7 +154,7 @@ elif page == "Prediction":
                 'Month': Month,
                 'Postal_Code': Postal_Code,
                 'Ship_Mode': Ship_Mode,
-                'Product_Name': Product_Name_clean,
+                'Product_Name': Product_Name,
                 'Category': Category
             }
 
