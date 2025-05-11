@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 from sklearn.preprocessing import StandardScaler
+import plotly.express as px
 
 model = joblib.load('RandomForest.pkl')
 encoders = joblib.load('label_encoder.pkl')  
@@ -182,12 +183,10 @@ elif page == "Prediction":
 elif page == "Plotly Dashboard":
     st.markdown("<h1 style='text-align: center;'>Plotly Sales Dashboard</h1>", unsafe_allow_html=True)
 
-    # Load dataset
     df = pd.read_csv('train.csv', parse_dates=['Order Date', 'Ship Date'])
     df['Order Date'] = pd.to_datetime(df['Order Date'], dayfirst=True)
     df['Ship Date'] = pd.to_datetime(df['Ship Date'], dayfirst=True)
 
-    # RFM Analysis
     from datetime import timedelta
     analysis_date = df['Order Date'].max() + timedelta(days=1)
 
@@ -199,17 +198,12 @@ elif page == "Plotly Dashboard":
     rfm.columns = ['Customer ID', 'Recency', 'Frequency', 'Monetary']
     rfm['Churn'] = (rfm['Recency'] > 90).astype(int)
 
-    # Enrich df
     df = df.merge(rfm, on='Customer ID', how='left')
     df['Month'] = df['Order Date'].dt.to_period('M').astype(str)
     df['Delivery Time (days)'] = (df['Ship Date'] - df['Order Date']).dt.days
 
-    # Colors
     custom_palette = ['#211C84', '#4D55CC', '#7A73D1', '#B5A8D5']
     churn_color_map = {0: '#4D55CC', 1: '#B5A8D5'}
-
-    # Plotly charts
-    import plotly.express as px
 
     figs = [
         px.histogram(rfm, x='Recency', nbins=30, title='Recency Distribution', color_discrete_sequence=[custom_palette[0]]),
@@ -228,7 +222,6 @@ elif page == "Plotly Dashboard":
         px.treemap(rfm, path=['Customer ID'], values='Monetary', color='Churn', title='Customer Value Treemap', color_discrete_map=churn_color_map),
     ]
 
-    # Display each figure in Streamlit
     for fig in figs:
         fig.update_layout(height=600)
         st.plotly_chart(fig, use_container_width=True)
