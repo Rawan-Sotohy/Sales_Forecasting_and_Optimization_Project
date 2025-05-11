@@ -5,7 +5,7 @@ import numpy as np
 from datetime import datetime
 from sklearn.preprocessing import StandardScaler
 
-model = joblib.load('LightGBM')
+model = joblib.load('RandomForest.pkl')
 encoders = joblib.load('label_encoder.pkl')  
 scaler = joblib.load('scaler')
 
