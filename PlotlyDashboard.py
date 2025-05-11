@@ -4,23 +4,17 @@ from datetime import timedelta
 from dash import Dash, dcc, html
 import dash_bootstrap_components as dbc
 
-# Initialize Dash app
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-server = app.server  # For deployment if needed
+server = app.server
 
-# Load dataset
 df = pd.read_csv('train.csv', parse_dates=['Order Date', 'Ship Date'])
 
-# Ensure date parsing is correct
 df['Order Date'] = pd.to_datetime(df['Order Date'], dayfirst=True)
 df['Ship Date'] = pd.to_datetime(df['Ship Date'], dayfirst=True)
 
-#print(df.info())
-
-# Set analysis date
 analysis_date = df['Order Date'].max() + timedelta(days=1)
 
-# RFM calculation
+# Calculate RFM 
 rfm = df.groupby('Customer ID').agg({
     'Order Date': lambda x: (analysis_date - x.max()).days,
     'Order ID': 'nunique',
@@ -28,19 +22,15 @@ rfm = df.groupby('Customer ID').agg({
 }).reset_index()
 rfm.columns = ['Customer ID', 'Recency', 'Frequency', 'Monetary']
 
-# Define churn logic
 rfm['Churn'] = (rfm['Recency'] > 90).astype(int)
 
-# Merge RFM into main df
 df = df.merge(rfm, on='Customer ID', how='left')
 df['Month'] = df['Order Date'].dt.to_period('M').astype(str)
 df['Delivery Time (days)'] = (df['Ship Date'] - df['Order Date']).dt.days
 
-# Define color palette
 custom_palette = ['#211C84', '#4D55CC', '#7A73D1', '#B5A8D5']
 churn_color_map = {0: '#4D55CC', 1: '#B5A8D5'}
 
-# Generate plots using the custom palette
 figs = [
     px.histogram(rfm, x='Recency', nbins=30, title='Recency Distribution', color_discrete_sequence=[custom_palette[0]]),
     px.histogram(rfm, x='Frequency', nbins=20, title='Frequency Distribution', color_discrete_sequence=[custom_palette[1]]),
@@ -64,7 +54,6 @@ figs = [
 for fig in figs:
     fig.update_layout(height=700)
 
-# Layout with all charts on one page
 app.layout = dbc.Container([
     html.H1("Sales Forcasting Dashboards", className='text-center my-4'),
 
@@ -77,6 +66,5 @@ app.layout = dbc.Container([
 
 ], fluid=True)
 
-# Run the app
 if __name__ == '__main__':
     app.run(debug=True)
