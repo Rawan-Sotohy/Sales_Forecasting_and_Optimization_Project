@@ -6,7 +6,7 @@ from datetime import datetime
 from sklearn.preprocessing import StandardScaler
 import plotly.express as px
 
-model = joblib.load('models/RandomForest.pkl')
+model = joblib.load('models/Random_Forest.pkl')
 encoders = joblib.load('models/label_encoder.pkl')  
 scaler = joblib.load('models/scaler')
 
