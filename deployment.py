@@ -6,18 +6,18 @@ from datetime import datetime
 from sklearn.preprocessing import StandardScaler
 import plotly.express as px
 
-model = joblib.load('RandomForest.pkl')
-encoders = joblib.load('label_encoder.pkl')  
-scaler = joblib.load('scaler')
+model = joblib.load('models/RandomForest.pkl')
+encoders = joblib.load('models/label_encoder.pkl')  
+scaler = joblib.load('models/scaler')
 
-st.set_page_config(page_title='Sales Forecasting and Optimization', page_icon='logo.png', initial_sidebar_state='expanded')
+st.set_page_config(page_title='Sales Forecasting and Optimization', page_icon='images/logo.png', initial_sidebar_state='expanded')
 
 
 st.sidebar.markdown("### Menu")
 page = st.sidebar.radio("Navigation", ["Home", "Prediction", "Plotly Dashboard", "Power BI Dashboard"])
 
 if page == "Home":
-    st.image('image.png')
+    st.image('images/image.png')
     st.markdown("<h1 >Dataset Overview</h1>", unsafe_allow_html=True)
 
     st.markdown("""
@@ -183,7 +183,7 @@ elif page == "Prediction":
 elif page == "Plotly Dashboard":
     st.markdown("<h1 style='text-align: center;'>Plotly Sales Dashboard</h1>", unsafe_allow_html=True)
 
-    df = pd.read_csv('train.csv', parse_dates=['Order Date', 'Ship Date'])
+    df = pd.read_csv('data/train.csv', parse_dates=['Order Date', 'Ship Date'])
     df['Order Date'] = pd.to_datetime(df['Order Date'], dayfirst=True)
     df['Ship Date'] = pd.to_datetime(df['Ship Date'], dayfirst=True)
 
